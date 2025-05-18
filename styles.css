@@ -1,0 +1,696 @@
+/* ===== Modern Base Styles ===== */
+:root {
+  --primary: #4361ee;
+  --primary-light: rgba(67, 97, 238, 0.08);
+  --primary-dark: #3a56d4;
+  --primary-gradient: linear-gradient(135deg, #4361ee, #5e72e4);
+  --text: #2b2d42;
+  --text-light: #6c757d;
+  --text-lighter: #adb5bd;
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-dark: rgba(0, 0, 0, 0.12);
+  --success: #4cc9f0;
+  --error: #ef476f;
+  --warning: #ffd166;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-fast: all 0.15s ease-out;
+}
+
+/* ===== Base Styles ===== */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ===== Modern Invoice Container ===== */
+.invoice-box {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.96);
+  overflow: hidden;
+  position: relative;
+}
+
+.invoice-box:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.invoice-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-gradient);
+}
+
+/* ===== Header Section ===== */
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.logo img {
+  height: 120px;
+  transition: var(--transition);
+  filter: drop-shadow(var(--shadow-sm));
+  transform-origin: left center;
+}
+
+.logo:hover img {
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.company-info h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+  letter-spacing: -0.25px;
+}
+
+.company-address {
+  color: var(--text-light);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ===== Invoice Header ===== */
+.invoice-header {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.invoice-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.5px;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.invoice-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+.invoice-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.invoice-meta p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.invoice-meta p span {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ===== Modern Tables ===== */
+/* ===== Scrollable Table Container ===== */
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin: 2rem 0;
+  background: var(--surface);
+  position: relative;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: var(--primary) var(--background); /* For Firefox */
+}
+
+/* Custom scrollbar for Webkit browsers */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  border-radius: 10px;
+}
+
+.table-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  min-width: 800px; /* Minimum width before scrolling kicks in */
+  border-collapse: collapse;
+  position: relative;
+}
+th {
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition-fast);
+  font-size: 0.95rem;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background: var(--primary-light);
+}
+
+/* ===== Wrappable Input Fields ===== */
+.borderless-input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 0.75rem 0;
+  font: inherit;
+  color: inherit;
+  outline: none;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+  white-space: pre-wrap;       /* Allow text to wrap */
+  word-wrap: break-word;      /* Break long words */
+  overflow-wrap: break-word;  /* Modern alternative */
+  min-height: 2.5rem;        /* Minimum height */
+  resize: none;              /* Disable manual resize */
+  display: block;
+  line-height: 1.5;          /* Better readability */
+}
+
+/* For textarea inputs specifically */
+.borderless-input.multiline {
+  min-height: 5rem;
+  padding: 0.75rem;
+  background: rgba(0,0,0,0.02);
+  border-radius: var(--radius-sm);
+}
+
+/* Input container for better wrapping control */
+.input-container {
+  display: flex;
+  position: relative;
+  min-height: 2.5rem;
+  align-items: center;
+}
+
+/* For single-line inputs that should expand */
+.borderless-input.expanding {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.borderless-input.expanding:focus {
+  white-space: pre-wrap;
+  overflow: visible;
+}
+
+/* ===== Action Buttons ===== */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 0.85rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: none;
+  letter-spacing: 0.25px;
+}
+
+.print-btn {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2);
+}
+
+.print-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(67, 97, 238, 0.3);
+}
+
+.save-btn {
+  background: white;
+  color: var(--primary);
+  border: 1px solid var(--border-dark);
+}
+
+.save-btn:hover {
+  background: var(--background);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  .invoice-box {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .logo img {
+    height: 80px;
+  }
+
+  .invoice-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .invoice-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Responsive tables */
+  .table-container {
+    border-radius: var(--radius-sm);
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.invoice-box {
+  animation: fadeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* ===== Micro-interactions ===== */
+[data-hover-effect="lift"] {
+  transition: var(--transition);
+}
+
+[data-hover-effect="lift"]:hover {
+  transform: translateY(-3px);
+}
+
+/* ===== Status Indicators ===== */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-paid {
+  background: rgba(76, 201, 240, 0.1);
+  color: #4cc9f0;
+}
+
+.status-pending {
+  background: rgba(255, 209, 102, 0.1);
+  color: #ffd166;
+}
+
+.status-overdue {
+  background: rgba(239, 71, 111, 0.1);
+  color: #ef476f;
+}
+
+/* ===== Hotline Styling ===== */
+.info-hotline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  background: rgba(239, 71, 111, 0.1);
+  color: var(--error);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.info-hotline::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--error);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(0.95); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .borderless-input {
+    padding: 0.5rem 0;
+    min-height: 2.25rem;
+  }
+
+  .borderless-input.multiline {
+    min-height: 4rem;
+  }
+
+  .input-container {
+    min-height: 2.25rem;
+  }
+}
+
+/* Adjust table column widths */
+.products-table th:nth-child(1),
+.products-table td:nth-child(1) {
+    width: 10%; /* Mã Hàng */
+}
+
+.products-table th:nth-child(2),
+.products-table td:nth-child(2) {
+    width: 20%; /* Tên Hàng */
+}
+
+.products-table th:nth-child(3),
+.products-table td:nth-child(3) {
+    width: 8%; /* Đơn Vị */
+}
+
+.products-table th:nth-child(4),
+.products-table td:nth-child(4) {
+    width: 8%; /* Số Lượng */
+}
+
+.products-table th:nth-child(5),
+.products-table td:nth-child(5) {
+    width: 15%; /* Đơn Giá */
+}
+
+.products-table th:nth-child(6),
+.products-table td:nth-child(6) {
+    width: 15%; /* Thành Tiền */
+}
+
+.products-table th:nth-child(7),
+.products-table td:nth-child(7) {
+    width: 14%; /* Phí Khác */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .products-table {
+        min-width: 800px; /* Allow horizontal scrolling */
+    }
+
+    .products-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .products-table th {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+  /* Table container adjustments */
+  .table-container {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Visual indicator for scrollable tables */
+  .table-container:after {
+    content: '← →';
+    position: absolute;
+    right: 10px;
+    top: -20px;
+    color: var(--text-light);
+    font-size: 0.8rem;
+    animation: scrollHint 2s infinite;
+  }
+
+  @keyframes scrollHint {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+  }
+
+  /* Table cell adjustments */
+  th, td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+.product-management {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.page-title {
+    text-align: center;
+    margin: 20px 0;
+    color: #4361ee;
+}
+
+.product-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 10px 15px;
+    background-color: #4361ee;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+.action-btn:hover {
+    background-color: #3a56d4;
+}
+
+.product-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.delete-btn {
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+@media print {
+    .product-controls {
+        display: none;
+    }
+}
+
+/* Product dropdown styles */
+.product-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropbtn {
+    background-color: white;
+    color: #333;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.dropbtn:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #4361ee;
+    color: white;
+}
+
+.product-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.product-dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+/* Add row button */
+.add-row-btn {
+    background-color: #4361ee;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+}
+
+.add-row-btn:hover {
+    background-color: #3a56d4;
+}
+
+/* Make quantity cells editable */
+td[contenteditable="true"] {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    min-width: 50px;
+}
