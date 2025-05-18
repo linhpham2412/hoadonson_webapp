@@ -1,436 +1,361 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hóa Đơn Sơn - PUKACO</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <meta name="theme-color" content="#4361ee">
+    <title>Hóa Đơn Sơn</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-blue: #007AFF;
+            --ios-gray: #F2F2F7;
+            --ios-light-gray: #E5E5EA;
+            --ios-dark-gray: #8E8E93;
+            --ios-border: #C6C6C8;
+            --ios-cell-bg: #FFFFFF;
+            --ios-label: #3C3C43;
+            --ios-placeholder: #C7C7CC;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--ios-gray);
+            margin: 0;
+            padding: 0;
+            color: var(--ios-label);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-top: 8px;
+        }
+
+        .header h1 {
+            font-weight: 600;
+            font-size: 22px;
+            margin-bottom: 4px;
+            color: #000;
+        }
+
+        .form-container {
+            background-color: var(--ios-cell-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 0.5px 1px rgba(0,0,0,0.1);
+        }
+
+        .form-section {
+            border-bottom: 0.5px solid var(--ios-border);
+            padding: 0 16px;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            position: relative;
+        }
+
+        .form-group:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0.5px;
+            background-color: var(--ios-border);
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--ios-dark-gray);
+            margin-bottom: 4px;
+            font-weight: 400;
+        }
+
+        input, textarea {
+            width: 100%;
+            border: none;
+            font-size: 17px;
+            padding: 4px 0;
+            font-family: inherit;
+            background: none;
+            color: #000;
+            font-weight: 400;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: var(--ios-placeholder);
+            font-weight: 400;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: none;
+            line-height: 1.4;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+        }
+
+        .save-button {
+            width: 100%;
+            background-color: var(--ios-blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 500;
+            margin-top: 24px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .save-button:active {
+            background-color: #0062CC;
+            transform: scale(0.98);
+        }
+
+        .save-button:disabled {
+            background-color: rgba(0, 122, 255, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-message {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 15px;
+            min-height: 20px;
+            padding: 0 16px;
+        }
+
+        .success {
+            color: #34C759;
+        }
+
+        .error {
+            color: #FF3B30;
+        }
+
+        /* iOS-like animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-container {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Better touch targets */
+        input, textarea, button {
+            touch-action: manipulation;
+        }
+
+        /* iOS-style focus effect */
+        .form-group:focus-within label {
+            color: var(--ios-blue);
+        }
+    </style>
 </head>
 <body>
-<div class="invoice-box">
+<div class="container">
     <div class="header">
-        <div class="logo">
-            <img src="pukaco.png" alt="Pukaco Logo" class="logo-image">
-        </div>
-        <div class="company-info">
-            <h4>CÔNG TY TNHH PUKACO</h4>
-            <p class="company-address">Phan Văn Trị, Phường 10, Quận Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam</p>
-        </div>
+        <h1>Hóa Đơn Sơn</h1>
     </div>
 
-    <div class="invoice-header">
-        <div class="invoice-title">
-            <h4>HÓA ĐƠN BÁN HÀNG</h4>
-        </div>
-    </div>
-
-    <div class="customer-section">
-        <div class="table-container">
-            <table class="customer-info">
-                <tr>
-                    <td class="info-label" data-label="Tên khách hàng">Tên khách hàng:</td>
-                    <td data-label="Input tên KH">
-                        <div class="input-container">
-                            <input type="text" class="borderless-input" placeholder="Nhập tên khách hàng">
-                        </div>
-                    </td>
-                    <td class="invoice-date" data-label="Ngày">Ngày:</td>
-                    <td data-label="Ngày"><span id="invoice-date">Loading...</span></td>
-                </tr>
-                <tr>
-                    <td class="info-label">Địa chỉ:</td>
-                    <td>
-                        <div class="input-container">
-                            <textarea class="borderless-input multiline" placeholder="Nhập địa chỉ"></textarea>
-                        </div>
-                    </td>
-                    <td class="info-label">Số:</td>
-                    <td class="info-label">BH000481</td>
-                </tr>
-                <tr>
-                    <td class="info-label">Mã Số Thuế:</td>
-                    <td><input type="text" class="borderless-input" placeholder="Nhập mã số thuế"></td>
-                    <td class="info-label">Loại tiền:</td>
-                    <td class="info-label">VND</td>
-                </tr>
-                <tr>
-                    <td class="info-label">Diễn Giải:</td>
-                    <td>
-                        <div class="input-container">
-                            <textarea class="borderless-input multiline" placeholder="Nhập diễn giải"></textarea>
-                        </div>
-                    </td>
-                    <td><span class="info-label">Hotline:</span></td>
-                    <td><span class="info-hotline">0903 384 597</span></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <div class="products-section">
-        <h3 class="section-title">Chi tiết sản phẩm/dịch vụ</h3>
-        <div class="table-container">
-            <table class="products-table">
-                <thead>
-                <tr>
-                    <th>Mã Hàng</th>
-                    <th>Tên Hàng</th>
-                    <th>Đơn Vị</th>
-                    <th>Số Lượng</th>
-                    <th>Đơn Giá</th>
-                    <th>Thành Tiền</th>
-                    <th>Phí Khác (%,VND)</th>
-                </tr>
-                </thead>
-                <tbody id="invoice-items">
-                <!-- Items will be added via JavaScript -->
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="5" class="total-label">Tổng cộng:</td>
-                    <td class="total-amount" id="invoice-total">0 ₫</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="tax-label">Thuế VAT (10%):</td>
-                    <td class="tax-amount" id="invoice-tax">0 ₫</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="grand-total-label">Tổng thanh toán:</td>
-                    <td class="grand-total-amount" id="invoice-grand-total">0 ₫</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="vietnamese-total-label">Bằng chữ:</td>
-                    <td colspan="5" class="vietnamese-total-amount" id="invoice-grand-total-text">Không đồng</td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-
-    <div class="footer">
-        <div class="payment-info">
-            <h4>Thông tin thanh toán</h4>
-            <div class="bank-info">
-                <p><strong>Ngân hàng:</strong> Vietcombank</p>
-                <p><strong>Số tài khoản:</strong> 0123456789</p>
-                <p><strong>Chủ tài khoản:</strong> CÔNG TY TNHH PUKACO</p>
+    <div class="form-container">
+        <div class="form-section">
+            <div class="form-group">
+                <label for="customerName">Tên Khách Hàng</label>
+                <input type="text" id="customerName" placeholder="Nhập tên khách hàng">
             </div>
         </div>
-        <div class="signature">
-            <div class="signature-box">
-                <p class="signature-line">Người mua hàng</p>
-                <p class="signature-name">(Ký và ghi rõ họ tên)</p>
-                <div class="signature-space"></div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="customerAddress">Địa Chỉ</label>
+                <input type="text" id="customerAddress" placeholder="Nhập địa chỉ">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="customerPhone">Số Điện Thoại</label>
+                <input type="tel" id="customerPhone" placeholder="Nhập số điện thoại" inputmode="tel">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="customerNote">Diễn Giải</label>
+                <textarea id="customerNote" placeholder="Nhập ghi chú (nếu có)"></textarea>
             </div>
         </div>
     </div>
 
-    <div class="action-buttons">
-        <button class="print-btn" onclick="window.print()">
-            <span class="btn-icon">🖨️</span> In hóa đơn
-        </button>
-        <button class="save-btn" id="saveInvoice">
-            <span class="btn-icon">💾</span> Lưu hóa đơn
-        </button>
-        <button class="products-btn" onclick="window.location.href='products.html'">
-            <span class="btn-icon">📋</span> Quản lý sản phẩm
-        </button>
-    </div>
+    <button id="saveButton" class="save-button">Lưu Khách Hàng</button>
+
+    <div id="statusMessage" class="status-message"></div>
 </div>
 
 <script>
-    // Sample invoice items
-    const items = [
-        {
-            code: "SP001",
-            name: "Sơn cao cấp màu trắng",
-            unit: "Thùng",
-            quantity: 5,
-            price: 350000,
-            fee: "5%"
-        },
-        {
-            code: "SP002",
-            name: "Sơn chống thấm ngoại thất",
-            unit: "Thùng",
-            quantity: 2,
-            price: 420000,
-            fee: "10,000 ₫"
-        },
-        {
-            code: "SP003",
-            name: "Chổi sơn chuyên dụng",
-            unit: "Cái",
-            quantity: 3,
-            price: 120000,
-            fee: "0"
-        }
-    ];
+        document.addEventListener('DOMContentLoaded', function() {
+            const saveButton = document.getElementById('saveButton');
+            const statusMessage = document.getElementById('statusMessage');
 
-    // Initialize when page loads
-    window.onload = function() {
-        initializeInvoice();
-    };
+            // Add iOS-like touch feedback
+            saveButton.addEventListener('touchstart', function() {
+                if (!this.disabled) {
+                    this.classList.add('active');
+                }
+            });
 
-    // Set today's date in Vietnamese format with month name
-    const today = new Date();
-    const day = today.getDate();
-    const month = today.getMonth();
-    const year = today.getFullYear();
+            saveButton.addEventListener('touchend', function() {
+                this.classList.remove('active');
+            });
 
-    const monthNamesVietnamese = [
-        "tháng 1", "tháng 2", "tháng 3", "tháng 4", "tháng 5", "tháng 6",
-        "tháng 7", "tháng 8", "tháng 9", "tháng 10", "tháng 11", "tháng 12"
-    ];
+            saveButton.addEventListener('click', async function() {
+                // Get form values
+                const customerName = document.getElementById('customerName').value.trim();
+                const customerAddress = document.getElementById('customerAddress').value.trim();
+                const customerPhone = document.getElementById('customerPhone').value.trim();
+                const customerNote = document.getElementById('customerNote').value.trim();
 
-    document.getElementById('invoice-date').textContent =
-        `${day.toString().padStart(2, '0')} ${monthNamesVietnamese[month]} ${year}`;
+                // Validate inputs
+                if (!customerName) {
+                    showStatus('Vui lòng nhập tên khách hàng', 'error');
+                    document.getElementById('customerName').focus();
+                    return;
+                }
 
-    // Add this JavaScript to auto-expand textareas
-    document.querySelectorAll('.borderless-input.multiline').forEach(input => {
-      input.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
-      });
-    });
+                if (!customerPhone) {
+                    showStatus('Vui lòng nhập số điện thoại', 'error');
+                    document.getElementById('customerPhone').focus();
+                    return;
+                }
 
-    // Function to get products from localStorage
-    function getProductsFromStorage() {
-        const savedProducts = localStorage.getItem('pukaco-products');
-        return savedProducts ? JSON.parse(savedProducts) : [];
-    }
-
-    // Function to create dropdown for product selection
-    function createProductDropdown() {
-        const products = getProductsFromStorage();
-        const productNameCells = document.querySelectorAll('td[data-label="Tên Hàng"]');
-
-        productNameCells.forEach(cell => {
-            // Skip if dropdown already exists
-            if (cell.querySelector('.product-dropdown')) return;
-
-            const currentValue = cell.textContent.trim();
-            const dropdown = document.createElement('div');
-            dropdown.className = 'product-dropdown';
-
-            // Create the button
-            const button = document.createElement('button');
-            button.className = 'dropbtn';
-            button.textContent = currentValue || 'Chọn sản phẩm';
-
-            // Create dropdown content
-            const dropdownContent = document.createElement('div');
-            dropdownContent.className = 'dropdown-content';
-
-            // Add product options
-            products.forEach(product => {
-                const option = document.createElement('a');
-                option.href = '#';
-                option.textContent = product.name;
-                option.onclick = function(e) {
-                    e.preventDefault();
-                    button.textContent = product.name;
-                    // Update the entire row with product details
-                    const row = cell.parentElement;
-                    row.querySelector('td[data-label="Mã Hàng"]').textContent = product.code;
-                    row.querySelector('td[data-label="Đơn Vị"]').textContent = product.unit;
-                    row.querySelector('td[data-label="Đơn Giá"]').textContent =
-                        product.price.toLocaleString('vi-VN') + ' ₫';
-
-                    // Calculate and update the total
-                    const quantityCell = row.querySelector('td[data-label="Số Lượng"]');
-                    const quantity = parseInt(quantityCell.textContent) || 0;
-                    const total = quantity * product.price;
-                    row.querySelector('td[data-label="Thành Tiền"]').textContent =
-                        total.toLocaleString('vi-VN') + ' ₫';
-
-                    // Recalculate all totals
-                    calculateTotals();
+                // Prepare customer data
+                const customerData = {
+                    name: customerName,
+                    address: customerAddress,
+                    phone: customerPhone,
+                    note: customerNote,
+                    timestamp: new Date().toISOString()
                 };
-                dropdownContent.appendChild(option);
+
+                // Disable button during save
+                saveButton.disabled = true;
+                showStatus('Đang lưu thông tin...');
+
+                try {
+                    // Save to Vercel Blob Storage
+                    const response = await saveToVercelBlob(customerData);
+
+                    if (response.success) {
+                        showStatus('Lưu thông tin khách hàng thành công!', 'success');
+                        // Clear form with animation
+                        animateFormReset();
+                    } else {
+                        showStatus('Lỗi khi lưu: ' + (response.error || 'Không xác định'), 'error');
+                    }
+                } catch (error) {
+                    showStatus('Lỗi kết nối: ' + error.message, 'error');
+                    console.error('Save error:', error);
+                } finally {
+                    saveButton.disabled = false;
+                }
             });
 
-            // Add "Add new" option
-            const addNew = document.createElement('a');
-            addNew.href = 'products.html';
-            addNew.textContent = '+ Thêm sản phẩm mới';
-            dropdownContent.appendChild(addNew);
-
-            dropdown.appendChild(button);
-            dropdown.appendChild(dropdownContent);
-            cell.innerHTML = '';
-            cell.appendChild(dropdown);
-        });
-    }
-
-    // Function to calculate all totals
-    function calculateTotals() {
-        let subtotal = 0;
-        const rows = document.querySelectorAll('#invoice-items tr');
-
-        rows.forEach(row => {
-            const quantity = parseInt(row.querySelector('td[data-label="Số Lượng"]').textContent) || 0;
-            const priceText = row.querySelector('td[data-label="Đơn Giá"]').textContent;
-            const price = parseInt(priceText.replace(/[^\d]/g, '')) || 0;
-            const total = quantity * price;
-
-            // Update the total cell
-            row.querySelector('td[data-label="Thành Tiền"]').textContent =
-                total.toLocaleString('vi-VN') + ' ₫';
-
-            subtotal += total;
-        });
-
-        // Update summary totals
-        const tax = subtotal * 0.1; // 10% VAT
-        const grandTotal = subtotal + tax;
-
-        document.getElementById('invoice-total').textContent = `${subtotal.toLocaleString('vi-VN')} ₫`;
-        document.getElementById('invoice-tax').textContent = `${tax.toLocaleString('vi-VN')} ₫`;
-        document.getElementById('invoice-grand-total').textContent = `${grandTotal.toLocaleString('vi-VN')} ₫`;
-        document.getElementById('invoice-grand-total-text').textContent = numberToVietnameseText(grandTotal);
-    }
-
-    // Function to add a new empty row
-    function addNewRow() {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td data-label="Mã Hàng"></td>
-            <td data-label="Tên Hàng"></td>
-            <td data-label="Đơn Vị"></td>
-            <td data-label="Số Lượng" contenteditable="true">1</td>
-            <td data-label="Đơn Giá">0 ₫</td>
-            <td data-label="Thành Tiền">0 ₫</td>
-            <td data-label="Phí Khác">0</td>
-        `;
-        document.getElementById('invoice-items').appendChild(row);
-        createProductDropdown();
-
-        // Add event listener for quantity changes
-        row.querySelector('td[data-label="Số Lượng"]').addEventListener('input', function() {
-            const priceText = row.querySelector('td[data-label="Đơn Giá"]').textContent;
-            const price = parseInt(priceText.replace(/[^\d]/g, '')) || 0;
-            const quantity = parseInt(this.textContent) || 0;
-            const total = quantity * price;
-            row.querySelector('td[data-label="Thành Tiền"]').textContent =
-                total.toLocaleString('vi-VN') + ' ₫';
-            calculateTotals();
-        });
-    }
-
-    // Initialize the invoice with sample data and dropdowns
-    function initializeInvoice() {
-        // Clear existing rows
-        document.getElementById('invoice-items').innerHTML = '';
-
-        // Add sample rows
-        items.forEach(item => {
-            const row = document.createElement('tr');
-            const itemTotal = item.quantity * item.price;
-
-            row.innerHTML = `
-                <td data-label="Mã Hàng">${item.code}</td>
-                <td data-label="Tên Hàng">${item.name}</td>
-                <td data-label="Đơn Vị">${item.unit}</td>
-                <td data-label="Số Lượng" contenteditable="true">${item.quantity}</td>
-                <td data-label="Đơn Giá">${item.price.toLocaleString('vi-VN')} ₫</td>
-                <td data-label="Thành Tiền">${itemTotal.toLocaleString('vi-VN')} ₫</td>
-                <td data-label="Phí Khác">${item.fee}</td>
-            `;
-            document.getElementById('invoice-items').appendChild(row);
-
-            // Add event listener for quantity changes
-            row.querySelector('td[data-label="Số Lượng"]').addEventListener('input', function() {
-                const quantity = parseInt(this.textContent) || 0;
-                const total = quantity * item.price;
-                row.querySelector('td[data-label="Thành Tiền"]').textContent =
-                    total.toLocaleString('vi-VN') + ' ₫';
-                calculateTotals();
-            });
-        });
-
-        // Add a button to add new rows
-        const addRowBtn = document.createElement('button');
-        addRowBtn.textContent = '+ Thêm dòng';
-        addRowBtn.className = 'add-row-btn';
-        addRowBtn.onclick = addNewRow;
-        document.querySelector('.products-section').appendChild(addRowBtn);
-
-        // Create dropdowns
-        createProductDropdown();
-    }
-
-
-    // Register Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('ServiceWorker registered'))
-                .catch(err => console.log('ServiceWorker error:', err));
-        });
-    }
-
-    // Add this function to convert numbers to Vietnamese text
-    function numberToVietnameseText(total) {
-        const digits = ['không', 'một', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín'];
-        const units = ['', 'nghìn', 'triệu', 'tỷ'];
-        if (total === 0) return 'Không đồng';
-        let result = '';
-        let unitIndex = 0;
-        let remaining = total;
-        while (remaining > 0) {
-            const chunk = remaining % 1000;
-            remaining = Math.floor(remaining / 1000);
-            if (chunk !== 0) {
-                let chunkText = '';
-                const hundred = Math.floor(chunk / 100);
-                const ten = Math.floor((chunk % 100) / 10);
-                const one = chunk % 10;
-                if (hundred > 0) {
-                    chunkText += digits[hundred] + ' trăm ';
-                }
-                if (ten > 0) {
-                    if (ten === 1) {
-                        chunkText += 'mười ';
-                    } else {
-                        chunkText += digits[ten] + ' mươi ';
-                    }
-                }
-                if (one > 0) {
-                    if (ten > 0 && one === 1) {
-                        chunkText += 'mốt ';
-                    } else if (ten === 0 && hundred !== 0 && one === 5) {
-                        chunkText += 'lăm ';
-                    } else if (one === 5) {
-                        chunkText += 'năm ';
-                    } else if (ten > 1 && one === 1) {
-                        chunkText += 'mốt ';
-                    } else {
-                        chunkText += digits[one] + ' ';
-                    }
-                }
-                chunkText += units[unitIndex] + ' ';
-                result = chunkText + result;
+            function showStatus(message, type = '') {
+                statusMessage.textContent = message;
+                statusMessage.className = 'status-message ' + type;
+                statusMessage.style.animation = 'none';
+                void statusMessage.offsetWidth; // Trigger reflow
+                statusMessage.style.animation = 'fadeIn 0.3s ease-out';
             }
-            unitIndex++;
-        }
-        return result.charAt(0).toUpperCase() + result.slice(1).trim() + ' đồng';
-    }
 
-    // Update the totals calculation to include Vietnamese text
-    document.getElementById('invoice-grand-total-text').textContent = numberToVietnameseText(grandTotal);
+            function animateFormReset() {
+                const form = document.querySelector('.form-container');
+                form.style.animation = 'none';
+                void form.offsetWidth; // Trigger reflow
+                form.style.animation = 'fadeIn 0.3s ease-out';
 
-    // Save invoice functionality
-    document.getElementById('saveInvoice').addEventListener('click', function() {
-        alert('Hóa đơn đã được lưu thành công!');
-        // Here you would typically send data to server or save locally
-    });
-</script>
+                // Clear form fields
+                document.getElementById('customerName').value = '';
+                document.getElementById('customerAddress').value = '';
+                document.getElementById('customerPhone').value = '';
+                document.getElementById('customerNote').value = '';
+
+                // Return focus to first field
+                setTimeout(() => {
+                    document.getElementById('customerName').focus();
+                }, 300);
+            }
+
+            async function saveToVercelBlob(data) {
+                try {
+                    // Use absolute URL if your frontend is on a different domain
+                    const apiUrl = window.location.hostname === 'localhost'
+                        ? 'http://localhost:3000/api/save-customer'
+                        : '/api/save-customer';
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    // Check if response is JSON
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const text = await response.text();
+                        throw new Error(`Expected JSON but got: ${text.substring(0, 100)}`);
+                    }
+
+                    return await response.json();
+
+                } catch (error) {
+                    console.error('API Error:', error);
+                    throw error;
+                }
+            }
+
+            // Better mobile keyboard handling
+            document.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('focus', function() {
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: this.getBoundingClientRect().top + window.scrollY - 100,
+                            behavior: 'smooth'
+                        });
+                    }, 300);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
