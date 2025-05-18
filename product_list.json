@@ -1,0 +1,14 @@
+[
+  {
+    "code": "SP001",
+    "name": "Sơn cao cấp màu trắng",
+    "unit": "Thùng",
+    "price": 350000
+  },
+  {
+    "code": "SP002",
+    "name": "Sơn chống thấm ngoại thất",
+    "unit": "Thùng",
+    "price": 420000
+  }
+]

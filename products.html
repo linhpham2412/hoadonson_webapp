@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý sản phẩm - PUKACO</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="product-management">
+  <div class="header">
+    <div class="logo">
+      <img src="pukaco.png" alt="Pukaco Logo" class="logo-image">
+    </div>
+    <div class="company-info">
+      <h4>CÔNG TY TNHH PUKACO</h4>
+      <p class="company-address">Phan Văn Trị, Phường 10, Quận Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam</p>
+    </div>
+  </div>
+
+  <h2 class="page-title">QUẢN LÝ DANH SÁCH SẢN PHẨM</h2>
+
+  <div class="product-controls">
+    <button id="addProduct" class="action-btn">+ Thêm sản phẩm</button>
+    <button id="saveProducts" class="action-btn">💾 Lưu danh sách</button>
+    <button id="loadProducts" class="action-btn">📂 Tải danh sách</button>
+    <button onclick="window.location.href='index.html'" class="action-btn">← Quay lại hóa đơn</button>
+  </div>
+
+  <div class="table-container">
+    <table class="products-table">
+      <thead>
+      <tr>
+        <th>Mã Hàng</th>
+        <th>Tên Hàng</th>
+        <th>Đơn Vị</th>
+        <th>Đơn Giá (₫)</th>
+        <th>Thao tác</th>
+      </tr>
+      </thead>
+      <tbody id="product-list">
+      <!-- Product rows will be added here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+    // Initialize empty product array
+    let products = [];
+
+    const productList = document.getElementById('product-list');
+    const addProductBtn = document.getElementById('addProduct');
+    const saveProductsBtn = document.getElementById('saveProducts');
+    const loadProductsBtn = document.getElementById('loadProducts');
+
+    // Render product list
+    function renderProductList() {
+        productList.innerHTML = '';
+        if (products.length === 0) {
+            productList.innerHTML = '<tr><td colspan="5" style="text-align: center;">Không có sản phẩm nào</td></tr>';
+            return;
+        }
+
+        products.forEach((product, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" value="${product.code || ''}" class="product-input" data-index="${index}" data-field="code"></td>
+                <td><input type="text" value="${product.name || ''}" class="product-input" data-index="${index}" data-field="name"></td>
+                <td><input type="text" value="${product.unit || ''}" class="product-input" data-index="${index}" data-field="unit"></td>
+                <td><input type="number" value="${product.price || 0}" class="product-input" data-index="${index}" data-field="price"></td>
+                <td>
+                    <button class="delete-btn" data-index="${index}">Xóa</button>
+                </td>
+            `;
+            productList.appendChild(row);
+        });
+
+        // Add event listeners to all input fields
+        document.querySelectorAll('.product-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const index = this.dataset.index;
+                const field = this.dataset.field;
+                const value = field === 'price' ? parseInt(this.value) || 0 : this.value;
+
+                if (products[index]) {
+                    products[index][field] = value;
+                }
+            });
+        });
+    }
+
+    // Load products from JSON file
+    function loadProductsFromFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = event => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    if (Array.isArray(data)) {
+                        resolve(data);
+                    } else {
+                        reject(new Error('Invalid file format'));
+                    }
+                } catch (error) {
+                    reject(error);
+                }
+            };
+            reader.onerror = () => reject(new Error('Error reading file'));
+            reader.readAsText(file);
+        });
+    }
+
+    // Try to load products automatically on page load
+    async function loadInitialProducts() {
+        try {
+            // Try to load from localStorage first (for backward compatibility)
+            const savedProducts = localStorage.getItem('pukaco-products');
+            if (savedProducts) {
+                products = JSON.parse(savedProducts);
+                renderProductList();
+                return;
+            }
+
+            // Try to load from default product_list.json file
+            const response = await fetch('product_list.json');
+            if (!response.ok) throw new Error('File not found');
+
+            const data = await response.json();
+            if (Array.isArray(data)) {
+                products = data;
+                renderProductList();
+            } else {
+                throw new Error('Invalid file format');
+            }
+        } catch (error) {
+            console.log('Could not load product list:', error.message);
+            // Load sample data if no file found
+            products = [
+                { code: "SP001", name: "Sơn cao cấp màu trắng", unit: "Thùng", price: 350000 },
+                { code: "SP002", name: "Sơn chống thấm ngoại thất", unit: "Thùng", price: 420000 },
+                { code: "SP003", name: "Chổi sơn chuyên dụng", unit: "Cái", price: 120000 }
+            ];
+            renderProductList();
+        }
+    }
+
+    // Add new product
+    addProductBtn.addEventListener('click', () => {
+        products.push({ code: '', name: '', unit: '', price: 0 });
+        renderProductList();
+    });
+
+    // Save products to JSON file
+    saveProductsBtn.addEventListener('click', async () => {
+        // First update any pending changes
+        document.querySelectorAll('.product-input').forEach(input => {
+            const index = input.dataset.index;
+            const field = input.dataset.field;
+            const value = field === 'price' ? parseInt(input.value) || 0 : input.value;
+
+            if (products[index]) {
+                products[index][field] = value;
+            }
+        });
+
+        // Filter out empty products
+        products = products.filter(product =>
+            product.code?.trim() !== '' ||
+            product.name?.trim() !== '' ||
+            product.unit?.trim() !== '' ||
+            product.price !== 0
+        );
+
+        try {
+            // Save to localStorage (for backward compatibility)
+            localStorage.setItem('pukaco-products', JSON.stringify(products));
+
+            // Create downloadable file
+            const data = JSON.stringify(products, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'product_list.json';
+
+            document.body.appendChild(a);
+            a.click();
+
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+
+            alert('Danh sách sản phẩm đã được lưu thành công!');
+            renderProductList();
+        } catch (error) {
+            console.error('Error saving file:', error);
+            alert('Có lỗi xảy ra khi lưu file!');
+        }
+    });
+
+    // Manual load products from file
+    loadProductsBtn.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+
+        input.onchange = async e => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const loadedProducts = await loadProductsFromFile(file);
+                products = loadedProducts;
+                renderProductList();
+                alert('Danh sách sản phẩm đã được tải thành công!');
+            } catch (error) {
+                console.error('Error loading file:', error);
+                alert('File không hợp lệ! Vui lòng chọn file JSON chứa danh sách sản phẩm.');
+            }
+        };
+
+        input.click();
+    });
+
+    // Delete product
+    productList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-btn')) {
+            const index = e.target.dataset.index;
+            products.splice(index, 1);
+            renderProductList();
+        }
+    });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', loadInitialProducts);
+</script>
+</body>
+</html>
